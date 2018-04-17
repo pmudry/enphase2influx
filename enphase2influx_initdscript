@@ -28,4 +28,4 @@ case "$1" in
     echo "Usage: /etc/init.d/enphase2influx {start|stop}"
     exit 1
     ;;
-esac
+esac 
