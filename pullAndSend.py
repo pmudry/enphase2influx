@@ -4,12 +4,9 @@
 """PollAndPushServer.py: Script for query production values from solar panel hosted
 on server and push data on InfluxDb.."""
 
-__author__ = "César Papilloud"
+__author__ = "César Papilloud, Pierre-A. Mudry"
 __copyright__ = "Copyright 2018, FireMON, WaterMON, EarthMON, SpaceMON"
-__credits__ = ["Pierre-André Mudry"]
-__license__ = "PadCesar License"
 __version__ = "1.1.0"
-__status__ = "Beta"
 
 import json
 import urllib2
@@ -36,13 +33,13 @@ lastNetConsumptionTime = 0
 
 """Functions definitions"""
 def pushData(data, seriesName, client):
-	"""Push data  into InfluxDB"""
-	valQuery = [1]
-	val = {}
-	val["fields"] = data
-	val["measurement"] = seriesName
-	valQuery[0] = val
-	client.write_points(valQuery)
+        """Push data  into InfluxDB"""
+        valQuery = [1]
+        val = {}
+        val["fields"] = data
+        val["measurement"] = seriesName
+        valQuery[0] = val
+        client.write_points(valQuery)
 
 client = InfluxDBClient(__host__, __port__, database=__dbname__)
 
@@ -51,50 +48,46 @@ print "************************"
 print "Getting Enphase JSON information from server " + __url__
 # Query the url
 try:
-	response = urllib2.urlopen(__url__)
+        response = urllib2.urlopen(__url__)
 
-	# Load response into json object
-	data = json.loads(response.read())
-	productionInverterData = data['production'][0]
-	productionEimData = data['production'][1]
-	consumptionData = data['consumption'][0]
-	netconsumptionData = data['consumption'][1]
+        # Load response into json object
+        data = json.loads(response.read())
+        productionInverterData = data['production'][0]
+        productionEimData = data['production'][1]
+        consumptionData = data['consumption'][0]
+        netconsumptionData = data['consumption'][1]
 
-	"""Part 2 : Check if readingTime is different"""
-	print "************************"
-	print "Time data from general information : ", productionInverterData['readingTime']
-	print "Time data from general data EIM : ", productionEimData['readingTime']
-	print "Time data from consumption : ", consumptionData['readingTime']
-	print "Time data from net consumption : ", netconsumptionData['readingTime']
-	print "************************"
+        """Part 2 : Check if readingTime is different"""
+        print "************************"
+        print "Time data from general information : ", productionInverterData['readingTime']
+        print "Time data from general data EIM : ", productionEimData['readingTime']
+        print "Time data from consumption : ", consumptionData['readingTime']
+        print "Time data from net consumption : ", netconsumptionData['readingTime']
+        print "************************"
 
-	"""Part 3 : Push data into InfluxDB, only if time is different"""
-	if productionInverterData['readingTime'] > lastProductionInverterTime:
-		print "Pushing production data"
-		pushData(productionInverterData, "general_info", client)
-		lastProductionInverterTime = productionInverterData['readingTime']
+        """Part 3 : Push data into InfluxDB, only if time is different"""
+        if productionInverterData['readingTime'] > lastProductionInverterTime:
+                print "Pushing production data"
+                pushData(productionInverterData, "general_info", client)
+                lastProductionInverterTime = productionInverterData['readingTime']
 
-	if productionEimData['readingTime'] > lastProductionEimTime:
-		print "Pushing general info"
-		pushData(productionEimData, "production", client)
-		lastProductionEimTime = productionEimData['readingTime']
+        if productionEimData['readingTime'] > lastProductionEimTime:
+                print "Pushing general info"
+                pushData(productionEimData, "production", client)
+                lastProductionEimTime = productionEimData['readingTime']
 
-	if consumptionData['readingTime'] > lastConsumptionTime:
-		print "Pushing total consumption data"
-		pushData(consumptionData, "total_consumption", client)
+        if consumptionData['readingTime'] > lastConsumptionTime:
+                print "Pushing total consumption data"
+                pushData(consumptionData, "total_consumption", client)
 		lastConsumptionTime = consumptionData['readingTime']
-                
-	if netconsumptionData['readingTime'] > lastNetConsumptionTime:
-		print "Pushing net consumption"
-		pushData(netconsumptionData, "net_consumption", client)
-		lastNetConsumptionTime = netconsumptionData['readingTime']
+
+        if netconsumptionData['readingTime'] > lastNetConsumptionTime:
+                print "Pushing net consumption"
+                pushData(netconsumptionData, "net_consumption", client)
+                lastNetConsumptionTime = netconsumptionData['readingTime']
 
 except Exception as e:
-	print e
-	
+        print e
+
 print "************************"
 
-# sleep 10 seconds
-#       pbar = progressbar.ProgressBar()
-#       for n in pbar(range(__sleepTime__*10)):
-#               time.sleep(0.1)
