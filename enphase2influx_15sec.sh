@@ -1,5 +1,5 @@
 #!/bin/sh
 while [ 1 ]; do
-    python PollAndPushServer.py &
+    python pullAndSend.py &
     sleep 15
 done

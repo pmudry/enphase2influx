@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PollAndPushServer.py: Script for query production values from solar panel hosted
-on server and push data on InfluxDb.."""
+"""PollAndPushServer.py: Script for query production values from Enphase-S gateway hosted
+on a local server server and push data on InfluxDb.."""
 
 __author__ = "César Papilloud, Pierre-A. Mudry"
 __copyright__ = "Copyright 2018, FireMON, WaterMON, EarthMON, SpaceMON"
@@ -13,9 +13,8 @@ import urllib2
 from influxdb import InfluxDBClient
 import time
 import progressbar
+import argparse
 
-# URL to query the JSON file
-__url__ = ("http://enphase.ayent/production.json")
 # Sleep time setting
 __sleepTime__ = 30
 # InfluxDB settings
@@ -24,6 +23,14 @@ __port__ = 8086
 __user__ = 'admin'
 __password__ = 'admin'
 __dbname__ = 'enphase'
+
+# Getting arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('--url', default="http://enphase.ayent/production.json",
+        help='the URL of production.json (default: http://enphase.ayent/production.json)')
+
+args = parser.parse_args()
+__url__ = args.url
 
 # Last reading time, used to avoid pushing same values twice
 lastProductionInverterTime = 0
