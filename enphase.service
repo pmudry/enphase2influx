@@ -1,0 +1,12 @@
+# To be put under /etc/systemd/service/enphase.service
+
+[Unit]
+Description=Enphase push to influxdb locally
+
+[Service]
+ExecStart=/home/pyrrhus/enphase2influx/enphase2influx_15sec.sh
+Type=simple
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
