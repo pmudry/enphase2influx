@@ -12,7 +12,7 @@
 case "$1" in
   start)
     log_begin_msg "Starting enphase2influx service"
-    /home/pi/enphase2influx/enphase2influx_15sec.sh &
+    /usr/local/bin/enphase2influx/enphase2influx_15sec.sh &
     log_end_msg $?
     exit 0
     ;;
