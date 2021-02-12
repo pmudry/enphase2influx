@@ -10,3 +10,9 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
+
+[Journal]
+Storage=auto
+MaxFileSec=1month
+ForwardToSyslog=no
+MaxLevelSyslog=warning
