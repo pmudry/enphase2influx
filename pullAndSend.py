@@ -1,12 +1,10 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """PollAndPushServer.py: Script for query production values from Enphase-S gateway hosted
 on a local server server and push data on InfluxDb.."""
 
 __author__ = "César Papilloud, Pierre-A. Mudry"
-__copyright__ = "Copyright 2018, FireMON, WaterMON, EarthMON, SpaceMON"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 import json
 import urllib3
